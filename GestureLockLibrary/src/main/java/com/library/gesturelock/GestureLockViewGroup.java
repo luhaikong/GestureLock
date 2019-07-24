@@ -444,7 +444,7 @@ public class GestureLockViewGroup extends RelativeLayout {
 
 
     //对外公开的一些方法
-    
+
     public void setGestureEventListener(GestureEventListener gestureEventListener) {
         this.gestureEventListener = gestureEventListener;
     }
