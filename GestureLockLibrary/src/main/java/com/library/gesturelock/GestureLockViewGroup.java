@@ -140,8 +140,8 @@ public class GestureLockViewGroup extends RelativeLayout {
         mFingerOnColor = a.getColor(R.styleable.GestureLockViewGroup_color_finger_on, mFingerOnColor);
         mFingerUpColorCorrect = a.getColor(R.styleable.GestureLockViewGroup_color_finger_up_correct, mFingerUpColorCorrect);
         mFingerUpColorError = a.getColor(R.styleable.GestureLockViewGroup_color_finger_up_error, mFingerUpColorError);
-        mCount = a.getInt(R.styleable.GestureLockViewGroup_count, mCount);
-        mPreferenceId = a.getInt(R.styleable.GestureLockViewGroup_preference_id, mPreferenceId);
+        mCount = a.getInt(R.styleable.GestureLockViewGroup_count_finger, mCount);
+        mPreferenceId = a.getInt(R.styleable.GestureLockViewGroup_preference_id_finger, mPreferenceId);
 
         a.recycle();
 

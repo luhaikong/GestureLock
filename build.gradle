@@ -7,10 +7,15 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.novoda:bintray-release:0.4.0'//添加
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+}
+
+plugins{
+    id "org.sonarqube" version "2.7"
 }
 
 allprojects {
@@ -18,8 +23,23 @@ allprojects {
         jcenter()
         maven { url 'https://maven.google.com' }
     }
+    tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addStringOption('encoding', 'UTF-8')
+    }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+//统一声明配置
+ext {
+    userOrg = 'luhaikong2018'
+    groupId = 'com.lhk'
+    uploadName = 'gesturelock'
+    publishVersion = '1.0.0'
+    desc = 'Request code can be generated automatically'
+    website = 'https://github.com/luhaikong/Gesturelock'
+    licences = ['Apache-2.0']
 }
