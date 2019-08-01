@@ -35,8 +35,8 @@ task clean(type: Delete) {
 
 //统一声明配置
 ext {
-    userOrg = 'luhaikong2018'
-    groupId = 'com.lhk'
+    userOrg = ''
+    groupId = ''
     uploadName = 'gesturelock'
     publishVersion = '1.0.0'
     desc = 'Request code can be generated automatically'
