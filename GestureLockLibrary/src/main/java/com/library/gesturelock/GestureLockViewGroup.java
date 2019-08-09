@@ -158,12 +158,14 @@ public class GestureLockViewGroup extends RelativeLayout {
 
     public void startWork(){
         if (gesturePreference==null){
-            throw new IllegalStateException("请先设置SharedPreferences文件的读取(加密)方式【OnDecryptionListener】");
-        } else {
-            password = gesturePreference.ReadStringPreference();
-            isSetPassword = !password.equals("null"); //判断是否已经保存有密码
-            isInPasswordSettingMode = !isSetPassword;     //当未设置密码，进入密码设置模式
+            gesturePreference = new GesturePreference(mGestureLockContext, mPreferenceId);
         }
+        /**
+         * 获取密码状态
+         */
+        password = gesturePreference.ReadStringPreference();//获取密码状态
+        isSetPassword = !password.equals("null"); //判断是否已经保存有密码
+        isInPasswordSettingMode = !isSetPassword;     //当未设置密码，进入密码设置模式
     }
 
     @Override
@@ -468,10 +470,9 @@ public class GestureLockViewGroup extends RelativeLayout {
      * 使用startWork代替
      */
     public void setOnDecryptionListener(GesturePreference.OnDecryptionListener onDecryptionListener) {
-        /**
-         * 获取密码状态
-         */
-        gesturePreference = new GesturePreference(mGestureLockContext, mPreferenceId);
+        if (gesturePreference==null){
+            gesturePreference = new GesturePreference(mGestureLockContext, mPreferenceId);
+        }
         gesturePreference.setDecryptionListener(onDecryptionListener);
     }
 
