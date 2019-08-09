@@ -1,15 +1,12 @@
 package com.demo.gesturelock;
 
-import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         });
+        mGestureLockViewGroup.startWork();
         gestureEventListener();
         gesturePasswordSettingListener();
         gestureRetryLimitListener();

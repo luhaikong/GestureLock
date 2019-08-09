@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.library.gesturelock.listener.GestureEventListener;
 import com.library.gesturelock.listener.GesturePasswordSettingListener;
@@ -31,6 +32,7 @@ import java.util.List;
 public class GestureLockViewGroup extends RelativeLayout {
 
     private static final String TAG = "GestureLockViewGroup";
+    private Context mGestureLockContext;
     /**
      * 保存所有的GestureLockView
      */
@@ -115,7 +117,7 @@ public class GestureLockViewGroup extends RelativeLayout {
     private GestureUnmatchedExceedListener gestureUnmatchedExceedListener;
 
     private GesturePreference gesturePreference;
-    private GesturePreference.OnDecryptionListener onDecryptionListener;
+//    private GesturePreference.OnDecryptionListener onDecryptionListener;
     private boolean isSetPassword = false;
     private boolean isInPasswordSettingMode = false;
     private boolean isWaitForFirstInput = true;
@@ -129,6 +131,7 @@ public class GestureLockViewGroup extends RelativeLayout {
 
     public GestureLockViewGroup(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mGestureLockContext = context;
 
         /**
          * 获得所有自定义的参数的值
@@ -145,23 +148,22 @@ public class GestureLockViewGroup extends RelativeLayout {
 
         a.recycle();
 
-        /**
-         * 获取密码状态
-         */
-        gesturePreference = new GesturePreference(context, mPreferenceId);
-        if (onDecryptionListener!=null){
-            gesturePreference.setDecryptionListener(onDecryptionListener);
-        }
-        password = gesturePreference.ReadStringPreference();
-        isSetPassword = !password.equals("null"); //判断是否已经保存有密码
-        isInPasswordSettingMode = !isSetPassword;     //当未设置密码，进入密码设置模式
-
         // 初始化画笔
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPath = new Path();
+    }
+
+    public void startWork(){
+        if (gesturePreference==null){
+            throw new IllegalStateException("请先设置SharedPreferences文件的读取(加密)方式【OnDecryptionListener】");
+        } else {
+            password = gesturePreference.ReadStringPreference();
+            isSetPassword = !password.equals("null"); //判断是否已经保存有密码
+            isInPasswordSettingMode = !isSetPassword;     //当未设置密码，进入密码设置模式
+        }
     }
 
     @Override
@@ -463,9 +465,14 @@ public class GestureLockViewGroup extends RelativeLayout {
     /**
      * 设置SharedPreferences文件加密接口
      * @param onDecryptionListener
+     * 使用startWork代替
      */
     public void setOnDecryptionListener(GesturePreference.OnDecryptionListener onDecryptionListener) {
-        this.onDecryptionListener = onDecryptionListener;
+        /**
+         * 获取密码状态
+         */
+        gesturePreference = new GesturePreference(mGestureLockContext, mPreferenceId);
+        gesturePreference.setDecryptionListener(onDecryptionListener);
     }
 
     public void removePassword() {

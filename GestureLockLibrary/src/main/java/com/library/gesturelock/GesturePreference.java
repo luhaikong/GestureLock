@@ -14,6 +14,8 @@ public class GesturePreference {
     private final String fileName = "gesturelock";
     private String nameTable = "gesturelock.nameTable";
 
+    public final static String FLAG_DECRYPTION = "***";//是否加过密的标记
+
     /**
      * xml文件数据保存加解密接口
      */
@@ -47,9 +49,19 @@ public class GesturePreference {
     public void WriteStringPreference(String data) {
         SharedPreferences preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        String cipher = data;
-        if (decryptionListener!=null&&decryptionListener.encrypt(data)!=null){
-            cipher = decryptionListener.encrypt(data);
+        String cipher = "null";
+        if ("null".equals(data)||data==null){
+            cipher = "null";
+        } else {
+            if (decryptionListener!=null){
+                if (decryptionListener.encrypt(data)!=null){
+                    cipher = FLAG_DECRYPTION + decryptionListener.encrypt(data);
+                } else {
+                    cipher = data;
+                }
+            } else {
+                cipher = data;
+            }
         }
         editor.putString(nameTable, cipher);
         editor.apply();
@@ -58,10 +70,19 @@ public class GesturePreference {
     public String ReadStringPreference() {
         SharedPreferences preferences = context.getSharedPreferences(fileName, Context.MODE_PRIVATE);
         String noCipher = preferences.getString(nameTable, "null");
-        if (decryptionListener!=null
-                &&!preferences.getString(nameTable, "null").equals("null")
-                &&decryptionListener.decrypt(preferences.getString(nameTable, "null"))!=null){
-            noCipher = decryptionListener.decrypt(preferences.getString(nameTable, "null"));
+        if ((FLAG_DECRYPTION + "null").equals(noCipher)||"null".equals(noCipher)){
+            noCipher = "null";
+        } else {
+            if (decryptionListener!=null){
+                if (noCipher.contains(FLAG_DECRYPTION)){
+                    noCipher = noCipher.replace(FLAG_DECRYPTION,"");
+                    if (decryptionListener.decrypt(noCipher)!=null){
+                        noCipher = decryptionListener.decrypt(noCipher);
+                    } else {
+                        noCipher = "null";
+                    }
+                }
+            }
         }
         return noCipher;
     }

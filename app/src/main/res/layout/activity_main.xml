@@ -61,9 +61,9 @@
         android:id="@+id/gesturelock"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:preference_id="1"
+        app:preference_id_finger="1"
         android:layout_marginTop="30dp"
-        app:count="3" />
+        app:count_finger="3" />
 
 
 </LinearLayout>
